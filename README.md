@@ -32,9 +32,10 @@ Option 1: Offline (MySQL Workbench / CLI)
    SHOW TABLES;
 
 Option 2: Online (OneCompiler)
-1. Open the SQL editor (for example https://www.db-fiddle.com/).  
+1. Open the SQL editor (https://onecompiler.com/mysql )).  
 2. Paste the contents of schematoruninonecompiler.sql.  
 3. Run the script to create tables inside the default database.  
 4. Test queries like:
    SHOW TABLES;
    DESC Book;
+
