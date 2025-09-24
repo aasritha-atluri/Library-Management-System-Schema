@@ -43,7 +43,7 @@ CREATE TABLE Member (
   name VARCHAR(150) NOT NULL,
   email VARCHAR(150) UNIQUE,
   phone VARCHAR(20),
-  membership_type ENUM('Student','Teacher','Public','Other') DEFAULT 'Public',
+  membership_type ENUM('Student','Teacher','Public','Other'),
   registered_on DATE
 );
 
@@ -53,8 +53,7 @@ CREATE TABLE Staff (
   name VARCHAR(150) NOT NULL,
   email VARCHAR(150) UNIQUE,
   role VARCHAR(50),
-  hired_on DATE,
-  active BOOLEAN DEFAULT TRUE
+  hired_on DATE
 );
 
 -- Transaction / Loan
@@ -91,4 +90,5 @@ CREATE TABLE Report (
   description TEXT,
   created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (staff_id) REFERENCES Staff(staff_id)
+
 );
