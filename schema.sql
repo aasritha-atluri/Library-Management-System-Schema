@@ -2,8 +2,6 @@
 -- Library Management System Schema (MySQL)
 
 CREATE DATABASE IF NOT EXISTS LibraryDB
-  CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_unicode_ci;
 USE LibraryDB;
 
 -- Publisher
@@ -12,7 +10,7 @@ CREATE TABLE IF NOT EXISTS Publisher (
   name VARCHAR(150) NOT NULL,
   address VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Author
 CREATE TABLE IF NOT EXISTS Author (
@@ -21,7 +19,7 @@ CREATE TABLE IF NOT EXISTS Author (
   bio TEXT,
   nationality VARCHAR(100),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Book
 CREATE TABLE IF NOT EXISTS Book (
@@ -35,7 +33,7 @@ CREATE TABLE IF NOT EXISTS Book (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_book_publisher FOREIGN KEY (publisher_id)
     REFERENCES Publisher(publisher_id) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Junction table for many-to-many Book <> Author
 CREATE TABLE IF NOT EXISTS BookAuthor (
@@ -44,7 +42,7 @@ CREATE TABLE IF NOT EXISTS BookAuthor (
   PRIMARY KEY (book_id, author_id),
   FOREIGN KEY (book_id) REFERENCES Book(book_id) ON DELETE CASCADE,
   FOREIGN KEY (author_id) REFERENCES Author(author_id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Member
 CREATE TABLE IF NOT EXISTS Member (
@@ -52,9 +50,9 @@ CREATE TABLE IF NOT EXISTS Member (
   name VARCHAR(150) NOT NULL,
   email VARCHAR(150) UNIQUE,
   phone VARCHAR(20),
-  membership_type ENUM('Student','Teacher','Public','Other') DEFAULT 'Public',
-  registered_on DATE DEFAULT CURRENT_DATE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  membership_type ENUM('Student','Teacher','Public','Other'),
+  registered_on DATE
+);
 
 -- Staff (Librarians)
 CREATE TABLE IF NOT EXISTS Staff (
@@ -62,9 +60,8 @@ CREATE TABLE IF NOT EXISTS Staff (
   name VARCHAR(150) NOT NULL,
   email VARCHAR(150) UNIQUE,
   role VARCHAR(50),
-  hired_on DATE,
-  active BOOLEAN DEFAULT TRUE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  hired_on DATE
+);
 
 -- Transaction / Loan
 CREATE TABLE IF NOT EXISTS TransactionRecord (
@@ -72,25 +69,25 @@ CREATE TABLE IF NOT EXISTS TransactionRecord (
   member_id INT NOT NULL,
   book_id INT NOT NULL,
   staff_id INT,
-  loan_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  loan_date DATE NOT NULL,
   due_date DATE NOT NULL,
   return_date DATE,
   status ENUM('Loaned','Returned','Overdue') DEFAULT 'Loaned',
   FOREIGN KEY (member_id) REFERENCES Member(member_id) ON DELETE RESTRICT,
   FOREIGN KEY (book_id) REFERENCES Book(book_id) ON DELETE RESTRICT,
   FOREIGN KEY (staff_id) REFERENCES Staff(staff_id) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Reservation
 CREATE TABLE IF NOT EXISTS Reservation (
   reservation_id INT AUTO_INCREMENT PRIMARY KEY,
   member_id INT NOT NULL,
   book_id INT NOT NULL,
-  reserved_on DATE NOT NULL DEFAULT CURRENT_DATE,
+  registered_on DATE,
   status ENUM('Pending','Fulfilled','Cancelled') DEFAULT 'Pending',
   FOREIGN KEY (member_id) REFERENCES Member(member_id) ON DELETE CASCADE,
   FOREIGN KEY (book_id) REFERENCES Book(book_id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 -- Report
 CREATE TABLE IF NOT EXISTS Report (
@@ -100,4 +97,4 @@ CREATE TABLE IF NOT EXISTS Report (
   description TEXT,
   created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (staff_id) REFERENCES Staff(staff_id) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
